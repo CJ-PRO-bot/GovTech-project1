@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    /* Red button style shared across buttons on this page */
+    .btn-red { background: #d32f2f !important; color: #fff; }
+    .btn-red:hover { background: #b71c1c !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+
+    <div class="card">
+      <h2>Log In</h2>
+      <form id="login-form">
+        <label>Email
+          <input type="email" name="email" required />
+        </label>
+        <label>Password
+          <input type="password" name="password" required />
+        </label>
+        <div class="captcha">
+          <label id="captcha-label">Captcha: <span id="captcha-question"></span>
+            <input type="text" id="captcha-answer" placeholder="Your answer" required />
+          </label>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap: wrap;">
+          <button type="submit" class="btn-red">Log In</button>
+          <button type="button" id="reset-login" class="btn-red">Reset</button>
+          <button type="button" id="forgot-password" class="btn-red">Forgot Password</button>
+        </div>
+      </form>
+      <div id="login-msg" class="msg" role="alert"></div>
+      <p>Don't have an account? <a href="/signup">Create one</a>.</p>
+    </div>
+  </div>
+
+  <script>
+    // Simple arithmetic captcha and UI logic
+    (function() {
+      const qEl = document.getElementById('captcha-question');
+      const ansEl = document.getElementById('captcha-answer');
+      const form = document.getElementById('login-form');
+      const resetBtn = document.getElementById('reset-login');
+      const forgotBtn = document.getElementById('forgot-password');
+      const loginMsg = document.getElementById('login-msg');
+
+      function newCaptcha() {
+        const a = Math.floor(Math.random() * 10) + 1;
+        const b = Math.floor(Math.random() * 10) + 1;
+        qEl.dataset.answer = String(a + b);
+        qEl.textContent = `${a} + ${b} = ?`;
+        ansEl.value = '';
+      }
+
+      if (form && qEl && ansEl) {
+        newCaptcha();
+        form.addEventListener('submit', (e) => {
+          const correct = qEl.dataset.answer;
+          if (!correct || ansEl.value.trim() !== correct) {
+            e.preventDefault();
+            loginMsg.className = 'msg error';
+            loginMsg.textContent = 'Captcha incorrect. Please try again.';
+            newCaptcha();
+            return false;
+          }
+          // allow main.js to proceed with fetch
+        });
+      }
+
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          form.reset();
+          loginMsg.textContent = '';
+          loginMsg.className = 'msg';
+          newCaptcha();
+        });
+      }
+
+      if (forgotBtn) {
+        forgotBtn.addEventListener('click', () => {
+          // Placeholder: implement your password reset flow here or navigate to /forgot
+          alert('Password reset is not configured yet. Please contact support or implement /forgot.');
+        });
+      }
+    })();
+  </script>
+  <script src="/main.js"></script>
+</body>
+</html>

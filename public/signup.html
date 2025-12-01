@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .btn-red { background: #d32f2f !important; color: #fff; }
+    .btn-red:hover { background: #b71c1c !important; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Sign Up</h1>
+
+    <div class="card">
+      <h2>Create Account</h2>
+      <form id="signup-form">
+        <label>Email
+          <input type="email" name="email" required />
+        </label>
+        <label>Password (min 8 chars)
+          <input type="password" name="password" minlength="8" required />
+        </label>
+        <button type="submit" class="btn-red">Create Account</button>
+      </form>
+      <div id="signup-msg" class="msg" role="alert"></div>
+      <p>Already have an account? <a href="/">Log in</a>.</p>
+    </div>
+  </div>
+
+  <script src="/main.js"></script>
+</body>
+</html>
