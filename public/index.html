@@ -1,95 +1,210 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Login</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Employee Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css" />
-  <style>
-    /* Red button style shared across buttons on this page */
-    .btn-red { background: #d32f2f !important; color: #fff; }
-    .btn-red:hover { background: #b71c1c !important; }
-  </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Login</h1>
-
-    <div class="card">
-      <h2>Log In</h2>
-      <form id="login-form">
-        <label>Email
-          <input type="email" name="email" required />
-        </label>
-        <label>Password
-          <input type="password" name="password" required />
-        </label>
-        <div class="captcha">
-          <label id="captcha-label">Captcha: <span id="captcha-question"></span>
-            <input type="text" id="captcha-answer" placeholder="Your answer" required />
-          </label>
-        </div>
-        <div style="display:flex; gap:8px; flex-wrap: wrap;">
-          <button type="submit" class="btn-red">Log In</button>
-          <button type="button" id="reset-login" class="btn-red">Reset</button>
-          <button type="button" id="forgot-password" class="btn-red">Forgot Password</button>
-        </div>
-      </form>
-      <div id="login-msg" class="msg" role="alert"></div>
-      <p>Don't have an account? <a href="/signup">Create one</a>.</p>
-    </div>
+  <div class="bg">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
   </div>
 
-  <script>
-    // Simple arithmetic captcha and UI logic
-    (function() {
-      const qEl = document.getElementById('captcha-question');
-      const ansEl = document.getElementById('captcha-answer');
-      const form = document.getElementById('login-form');
-      const resetBtn = document.getElementById('reset-login');
-      const forgotBtn = document.getElementById('forgot-password');
-      const loginMsg = document.getElementById('login-msg');
+  <header class="app-header">
+    <div class="brand">
+      <div class="logo">EP</div>
+      <div class="brand-text">
+        <h1>Employee Portal</h1>
+        <p class="tag">Interactive. Live. Simple.</p>
+      </div>
+    </div>
+    <nav class="nav">
+      <button id="nav-login" class="btn ghost">Log In</button>
+      <button id="nav-signup" class="btn primary">Sign Up</button>
+    </nav>
+  </header>
 
-      function newCaptcha() {
-        const a = Math.floor(Math.random() * 10) + 1;
-        const b = Math.floor(Math.random() * 10) + 1;
-        qEl.dataset.answer = String(a + b);
-        qEl.textContent = `${a} + ${b} = ?`;
-        ansEl.value = '';
-      }
+  <main class="container">
+    <!-- Auth Views -->
+    <section id="auth" class="card auth">
+      <div class="tabs">
+        <button id="tab-login" class="tab active">Log In</button>
+        <button id="tab-signup" class="tab">Sign Up</button>
+      </div>
 
-      if (form && qEl && ansEl) {
-        newCaptcha();
-        form.addEventListener('submit', (e) => {
-          const correct = qEl.dataset.answer;
-          if (!correct || ansEl.value.trim() !== correct) {
-            e.preventDefault();
-            loginMsg.className = 'msg error';
-            loginMsg.textContent = 'Captcha incorrect. Please try again.';
-            newCaptcha();
-            return false;
-          }
-          // allow main.js to proceed with fetch
-        });
-      }
+      <form id="form-login" class="form visible" novalidate>
+        <div class="input-group">
+          <label for="login-email">Email</label>
+          <input id="login-email" type="email" placeholder="you@company.com" required />
+        </div>
+        <div class="input-group">
+          <label for="login-password">Password</label>
+          <input id="login-password" type="password" placeholder="••••••••" required />
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn primary full">
+            <span class="btn-label">Log In</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+        <p class="muted">No account?
+          <a href="#" id="link-to-signup">Create one</a>
+        </p>
+        <p id="login-error" class="error"></p>
+      </form>
 
-      if (resetBtn) {
-        resetBtn.addEventListener('click', () => {
-          form.reset();
-          loginMsg.textContent = '';
-          loginMsg.className = 'msg';
-          newCaptcha();
-        });
-      }
+      <form id="form-signup" class="form" novalidate>
+        <div class="grid-2">
+          <div class="input-group">
+            <label for="signup-name">Full Name</label>
+            <input id="signup-name" type="text" placeholder="Jane Doe" required />
+          </div>
+          <div class="input-group">
+            <label for="signup-role">Role/Title</label>
+            <input id="signup-role" type="text" placeholder="Software Engineer" />
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="signup-email">Email</label>
+          <input id="signup-email" type="email" placeholder="you@company.com" required />
+        </div>
+        <div class="grid-2">
+          <div class="input-group">
+            <label for="signup-password">Password</label>
+            <input id="signup-password" type="password" placeholder="At least 6 characters" minlength="6" required />
+          </div>
+          <div class="input-group">
+            <label for="signup-password2">Confirm Password</label>
+            <input id="signup-password2" type="password" placeholder="Repeat password" minlength="6" required />
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn primary full">
+            <span class="btn-label">Create Account</span>
+            <span class="spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+        <p class="muted">Already have an account?
+          <a href="#" id="link-to-login">Log in</a>
+        </p>
+        <p id="signup-error" class="error"></p>
+      </form>
+    </section>
 
-      if (forgotBtn) {
-        forgotBtn.addEventListener('click', () => {
-          // Placeholder: implement your password reset flow here or navigate to /forgot
-          alert('Password reset is not configured yet. Please contact support or implement /forgot.');
-        });
-      }
-    })();
-  </script>
-  <script src="/main.js"></script>
+    <!-- Dashboard -->
+    <section id="dashboard" class="dashboard hidden">
+      <aside class="sidebar">
+        <div class="user-card">
+          <div class="avatar" id="user-avatar"></div>
+          <div class="user-meta">
+            <h3 id="user-name">John Doe</h3>
+            <p id="user-role" class="muted">Employee</p>
+            <p id="user-email" class="muted">
+              <span class="dot"></span><span></span>
+            </p>
+          </div>
+        </div>
+        <ul class="menu">
+          <li><button class="menu-item active" data-view="overview">Overview</button></li>
+          <li><button class="menu-item" data-view="attendance">Attendance</button></li>
+          <li><button class="menu-item" data-view="profile">Profile</button></li>
+        </ul>
+        <button id="btn-logout" class="btn ghost full">Log Out</button>
+      </aside>
+
+      <section class="content">
+        <div id="view-overview" class="view visible">
+          <div class="cards-grid">
+            <div class="kpi">
+              <div class="kpi-label">Days Present (7d)</div>
+              <div id="kpi-days" class="kpi-value">0</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Streak</div>
+              <div id="kpi-streak" class="kpi-value">0</div>
+            </div>
+            <div class="kpi">
+              <div class="kpi-label">Last Check-in</div>
+              <div id="kpi-last" class="kpi-value">—</div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <h3>Attendance (Last 7 days)</h3>
+            </div>
+            <canvas id="chart-7d" width="900" height="260" aria-label="Attendance chart"></canvas>
+          </div>
+        </div>
+
+        <div id="view-attendance" class="view">
+          <div class="panel">
+            <div class="panel-head">
+              <h3>Check-in/out</h3>
+              <div class="live-time" id="live-time"></div>
+            </div>
+            <div class="actions">
+              <button id="btn-checkin" class="btn success">Check In</button>
+              <button id="btn-checkout" class="btn warn" disabled>Check Out</button>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">
+              <h3>Recent Activity</h3>
+            </div>
+            <div class="table">
+              <div class="thead">
+                <div>Date</div>
+                <div>Check In</div>
+                <div>Check Out</div>
+                <div>Duration</div>
+              </div>
+              <div id="activity" class="tbody"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="view-profile" class="view">
+          <div class="panel">
+            <div class="panel-head">
+              <h3>Profile</h3>
+            </div>
+            <form id="form-profile" class="form narrow" novalidate>
+              <div class="input-group">
+                <label for="profile-name">Full Name</label>
+                <input id="profile-name" type="text" required />
+              </div>
+              <div class="input-group">
+                <label for="profile-role">Role/Title</label>
+                <input id="profile-role" type="text" />
+              </div>
+              <div class="input-group">
+                <label>Email</label>
+                <input id="profile-email" type="email" disabled />
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn primary">
+                  <span class="btn-label">Save Changes</span>
+                  <span class="spinner"></span>
+                </button>
+              </div>
+              <p id="profile-msg" class="success"></p>
+            </form>
+          </div>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>Demo with backend (Express + SQLite). © <span id="year"></span></p>
+  </footer>
+
+  <script src="/app.js"></script>
 </body>
 </html>
