@@ -1,0 +1,181 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Employee Portal</title>
+    <link rel="stylesheet" href="/static/public/styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div class="brand">
+        <div class="logo">EP</div>
+        <div class="brand-text">
+          <h1>Employee Portal</h1>
+          <p class="tag">Modern attendance and profile management</p>
+        </div>
+      </div>
+      <nav>
+        <button id="nav-login" class="btn ghost">Login</button>
+        <button id="nav-signup" class="btn ghost">Sign up</button>
+      </nav>
+    </header>
+
+    <div class="container">
+      <div id="auth" class="auth card">
+        <div class="tabs">
+          <button id="tab-login" class="tab active">Login</button>
+          <button id="tab-signup" class="tab">Sign up</button>
+        </div>
+
+        <div id="form-login" class="form visible">
+          <div class="input-group">
+            <label for="login-email">Email</label>
+            <input id="login-email" type="email" placeholder="you@example.com" />
+          </div>
+          <div class="input-group">
+            <label for="login-password">Password</label>
+            <input id="login-password" type="password" placeholder="••••••••" />
+          </div>
+          <div class="error" id="login-error"></div>
+          <div class="form-actions">
+            <button class="btn primary full" type="submit" form="login-form-inner">
+              <span class="btn-label">Login</span>
+              <span class="spinner"></span>
+            </button>
+          </div>
+          <form id="login-form-inner"></form>
+          <p class="muted">No account? <a href="#" id="link-to-signup">Create one</a></p>
+        </div>
+
+        <div id="form-signup" class="form">
+          <div class="grid-2">
+            <div class="input-group">
+              <label for="signup-name">Full name</label>
+              <input id="signup-name" type="text" placeholder="Jane Doe" />
+            </div>
+            <div class="input-group">
+              <label for="signup-role">Role</label>
+              <input id="signup-role" type="text" placeholder="Engineer" />
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="signup-email">Email</label>
+            <input id="signup-email" type="email" placeholder="you@example.com" />
+          </div>
+          <div class="grid-2">
+            <div class="input-group">
+              <label for="signup-password">Password</label>
+              <input id="signup-password" type="password" />
+            </div>
+            <div class="input-group">
+              <label for="signup-password2">Confirm password</label>
+              <input id="signup-password2" type="password" />
+            </div>
+          </div>
+          <div class="error" id="signup-error"></div>
+          <div class="form-actions">
+            <button class="btn primary full" type="submit" form="signup-form-inner">
+              <span class="btn-label">Create account</span>
+              <span class="spinner"></span>
+            </button>
+          </div>
+          <form id="signup-form-inner"></form>
+          <p class="muted">Already have an account? <a href="#" id="link-to-login">Sign in</a></p>
+        </div>
+      </div>
+
+      <div id="dashboard" class="dashboard hidden">
+        <aside class="sidebar">
+          <div class="user-card">
+            <div id="user-avatar" class="avatar"></div>
+            <div class="user-meta">
+              <h3 id="user-name">—</h3>
+              <p><span class="dot"></span><span id="user-role">Employee</span></p>
+              <p id="user-email" class="muted">Email: <span>—</span></p>
+            </div>
+          </div>
+          <ul class="menu">
+            <li><button class="menu-item active" data-view="overview">Overview</button></li>
+            <li><button class="menu-item" data-view="attendance">Attendance</button></li>
+            <li><button class="menu-item" data-view="profile">Profile</button></li>
+          </ul>
+          <button id="btn-logout" class="btn">Logout</button>
+        </aside>
+
+        <main class="content">
+          <section id="view-overview" class="view visible">
+            <div class="cards-grid">
+              <div class="kpi card">
+                <div class="kpi-label">Days present in last 7d</div>
+                <div id="kpi-days" class="kpi-value">0</div>
+              </div>
+              <div class="kpi card">
+                <div class="kpi-label">Current streak</div>
+                <div id="kpi-streak" class="kpi-value">0</div>
+              </div>
+              <div class="kpi card">
+                <div class="kpi-label">Last check-in</div>
+                <div id="kpi-last" class="kpi-value">—</div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head">
+                <h3>Last 7 days</h3>
+              </div>
+              <canvas id="chart-7d" width="740" height="240"></canvas>
+            </div>
+          </section>
+
+          <section id="view-attendance" class="view">
+            <div class="panel">
+              <div class="panel-head">
+                <h3>Today</h3>
+                <div class="live-time" id="live-time">—</div>
+                <div class="actions">
+                  <button id="btn-checkin" class="btn success">Check in</button>
+                  <button id="btn-checkout" class="btn warn">Check out</button>
+                </div>
+              </div>
+              <div class="table">
+                <div class="thead">
+                  <div>Date</div><div>In</div><div>Out</div><div>Duration</div>
+                </div>
+                <div class="tbody" id="activity"></div>
+              </div>
+            </div>
+          </section>
+
+          <section id="view-profile" class="view">
+            <form id="form-profile" class="panel">
+              <div class="grid-2">
+                <div class="input-group">
+                  <label for="profile-name">Full name</label>
+                  <input id="profile-name" type="text" />
+                </div>
+                <div class="input-group">
+                  <label for="profile-role">Role</label>
+                  <input id="profile-role" type="text" />
+                </div>
+              </div>
+              <div class="input-group">
+                <label for="profile-email">Email</label>
+                <input id="profile-email" type="email" disabled />
+              </div>
+              <div id="profile-msg" class="success"></div>
+              <div class="form-actions">
+                <button class="btn primary">Save</button>
+              </div>
+            </form>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <footer class="app-footer">
+      <p>Employee Portal • <span id="year"></span></p>
+    </footer>
+
+    <script src="/static/public/app.js"></script>
+  </body>
+</html>
